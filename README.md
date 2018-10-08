@@ -29,7 +29,7 @@ We introduce a novel generative autoencoder network model that learns to encode 
 
 [Code (PyTorch)](https://github.com/AaltoVision/pioneer)
 
-[Pre-trained models:] [coming in October 2018]
+Pre-trained models: (coming in October 2018)
 
 ## Support
 
