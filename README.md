@@ -26,7 +26,9 @@ We introduce a novel generative autoencoder network model that learns to encode 
 ## Materials
 
 Paper pre-print: https://arxiv.org/abs/1807.03026
+
 Code (PyTorch): https://github.com/AaltoVision/pioneer
+
 Pre-trained models: [coming in October 2018]
 
 ## Support
@@ -37,7 +39,6 @@ For all correspondence, please contact ari.heljakka@aalto.fi.
 
 Please cite our work as follows:
 
-{% raw  %}
 ```
 @inproceedings{Heljakka+Solin+Kannala:2018,
       title = {Pioneer Networks: Progressively Growing Generative Autoencoder},
@@ -47,4 +48,3 @@ Please cite our work as follows:
   booktitle = {Asian Conference on Computer Vision (ACCV)}
 }
 ```
-{% endraw  %}
