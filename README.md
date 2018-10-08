@@ -25,11 +25,11 @@ We introduce a novel generative autoencoder network model that learns to encode 
 
 ## Materials
 
-Paper pre-print: https://arxiv.org/abs/1807.03026
+[Paper pre-print](https://arxiv.org/abs/1807.03026)
 
-Code (PyTorch): https://github.com/AaltoVision/pioneer
+[Code (PyTorch)](https://github.com/AaltoVision/pioneer)
 
-Pre-trained models: [coming in October 2018]
+[Pre-trained models:] [coming in October 2018]
 
 ## Support
 
