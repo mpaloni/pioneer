@@ -17,6 +17,7 @@
 ![](samples/interpolations_5_480003_1.0_7x7.png)
 ...
 ![input 4](samples/interpolations_5_480003_1.0_orig_3.png)
+
 Figure: Given input images (far left and far right), our model can e.g. morph one to the other. The images in between are synthesized ([more detailed images](https://github.com/AaltoVision/pioneer/tree/master/samples)).
 
 ## Non-technical Summary
