@@ -17,7 +17,12 @@
 ![](samples/interpolations_5_480003_1.0_7x7.png)
 ...
 ![input 4](samples/interpolations_5_480003_1.0_orig_3.png)
+Figure: Given input images (far left and far right), our model can e.g. morph one to the other. The images in between are synthesized ([more detailed images](https://github.com/AaltoVision/pioneer/tree/master/samples)).
 
+## Non-technical Summary
+
+PIONEER is a generative neural network model that learns how certain kinds of images, such as faces, are structured.
+It can then modify your input images in various smart ways (e.g. make the nose bigger, more feminine, etc.) without losing sharpness in the output. The more well-known generative models, GANs, cannot make this kind of general modifications of existing input images.
 
 ## Abstract
 
@@ -29,7 +34,7 @@ We introduce a novel generative autoencoder network model that learns to encode 
 
 [Code (PyTorch)](https://github.com/AaltoVision/pioneer)
 
-Pre-trained models: (coming in October 2018)
+[Pre-trained models](https://zenodo.org/record/1455188)
 
 ## Support
 
