@@ -42,6 +42,11 @@ The batch sizes have been selected to enable running on 12 GB of GPU memory. Up 
 For detailed Python package configuration used, see requirements.txt.
 
 
+## Pre-trained models
+
+[Pre-trained models](https://zenodo.org/record/1455188) can be downloaded from Zenodo for each dataset and resolution target.
+You can run them on command line with the [usage](#usage) examples below, inserting the proper dataset name (e.g. '-d celeba'), path name (e.g. '--save_dir CelebA-128') and checkpoint ID (e.g. '--start_iteration=36200000').
+
 ## Quick start
 ```
 # 1. Download the CelebA (aligned, cropped) dataset (remember to separate the train/test later).
