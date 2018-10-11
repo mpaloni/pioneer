@@ -23,7 +23,7 @@ Figure: For two real input images (far left and far right), our model can e.g. m
 ## Non-technical Summary
 
 PIONEER is a generative neural network model that learns how certain kinds of images, such as faces, are structured.
-It can then modify your input images in various smart ways (e.g. make the nose bigger, more feminine, etc.) without losing sharpness in the output. The more well-known generative models, GANs, cannot make this kind of general modifications of existing input images.
+It can be used to modify your input images in various smart ways (e.g. make the nose bigger, more feminine, etc.) without losing sharpness in the output. The best-known generative models, GANs, cannot normally make this kind of general modifications of *existing input images*.
 
 ## Abstract
 
