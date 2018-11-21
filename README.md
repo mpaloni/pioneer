@@ -61,7 +61,7 @@ python train.py -d celeba --save_dir celeba64_quicktest --train_path /data/celeb
 
 ## Known issues:
 
-[Update 2018-10-22] Multi-GPU training has suffered from the [PyTorch bug 12671](https://github.com/pytorch/pytorch/issues/12671). We have a fix that probably resolves the issue, but before we released it, the bug was officially closed in the PyTorch repository by another independent fix. However, even in the presence of the bug, the results of the paper *can* be reproduced.
+[Update 2018-10-22] Multi-GPU training has suffered from the [PyTorch bug 12671](https://github.com/pytorch/pytorch/issues/12671). We have a [hotfix](https://gist.github.com/heljakka/ff8e0cd97da8ccf06c7973c06d5fe82e) that resolves the issue, but before we released it, the bug was officially closed in the PyTorch repository by another independent fix. However, even in the presence of the bug, the results of the paper *can* be reproduced. Our hotfix has been confirmed to give you improved results with multi-GPU setup. (We have not confirmed the effects of the official fix.)
 
 The memory management has known issues which will be fixed on the forthcoming PyTorch 0.4 update. If you enable training-time samples, it can produce out-of-memory crashes on higher resolutions. If so, please try removing all training-time tests (`--sample_N=0 --interpolate_N=0 --reconstructions_N=0`).
 
