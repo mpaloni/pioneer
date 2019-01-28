@@ -1,0 +1,133 @@
+# Make latent presentations
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/target --max_phase=10 --latent_outpath  ~/dippa/flip/target --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=5
+
+# Recosntruct these images
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/target --max_phase=10 --latent_inpath  ~/dippa/flip/target --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=6
+
+#Rename images to be ordered with front zeros
+#Run in file
+for a in *_late_orig.png; do
+  b=$(printf %04d_late_orig.png ${a%_late_orig.png})
+  if [ $a != $b ]; then
+    mv $a $b
+  fi
+done
+
+for a in *_late; do
+  b=$(printf %04d_late ${a%_late})
+  if [ $a != $b ]; then
+    mv $a $b
+  fi
+done
+
+
+
+
+# Apply flip
+# Get delta
+cp ~/dippa/flip/latent_diff/scattered_subtraction_late ~/dippa/flip/target/scattered_subtraction_late
+mv ~/dippa/flip/target/scattered_subtraction_late ~/dippa/flip/target/delta_late
+
+#Plus
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "plus"  --source ~/dippa/flip/target --first 0_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "plus"  --source ~/dippa/flip/target --first 1_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "plus"  --source ~/dippa/flip/target --first 2_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "plus"  --source ~/dippa/flip/target --first 3_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "plus"  --source ~/dippa/flip/target --first 4_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "plus"  --source ~/dippa/flip/target --first sketch_girl_late --second delta_late  --target  ~/dippa/flip/result
+
+#Minus
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "minus"  --source ~/dippa/flip/target --first 0_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "minus"  --source ~/dippa/flip/target --first 1_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "minus"  --source ~/dippa/flip/target --first 2_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "minus"  --source ~/dippa/flip/target --first 3_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "minus"  --source ~/dippa/flip/target --first 4_late --second delta_late --target  ~/dippa/flip/result
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "minus"  --source ~/dippa/flip/target --first sketch_girl_late --second delta_late  --target  ~/dippa/flip/result
+
+
+# Recosntruct result images
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/target --max_phase=10 --latent_inpath  ~/dippa/flip/result --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=6
+
+# Combine images
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result/plus
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/latent/left
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/latent/right
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/target "orig"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/target "reconstructed"
+
+# Recosntruct left
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/latent/left --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=43
+
+# and right
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/latent/right --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=43
+
+#Combine
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/latent/left "reconstructed"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/latent/right "reconstructed"
+
+#Average for left
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "avg"  --source "~/dippa/flip/latent/left" --target "~/dippa/flip/latent/avg_left" --avg_keyword "_late"
+
+# and right
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "avg"  --source "~/dippa/flip/latent/right" --target "~/dippa/flip/latent/avg_right" --avg_keyword "_late"
+
+#Reconstruct avg
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/latent/avg_left --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=2
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/latent/avg_right --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=2
+
+#reconstruct delta
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/latent_diff --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=1
+
+#Make dir for flips
+mkdir ~/dippa/flip/result_multiple_flips/0_late
+mkdir ~/dippa/flip/result_multiple_flips/1_late
+mkdir ~/dippa/flip/result_multiple_flips/2_late
+mkdir ~/dippa/flip/result_multiple_flips/3_late
+mkdir ~/dippa/flip/result_multiple_flips/4_late
+mkdir ~/dippa/flip/result_multiple_flips/sketch_girl_late
+
+# Make multiple flips
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "flip_all_ways"  --source "~/dippa/flip/target" --target "~/dippa/flip/result_multiple_flips/0_late" --first 0_late --second delta_late
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "flip_all_ways"  --source "~/dippa/flip/target" --target "~/dippa/flip/result_multiple_flips/1_late" --first 1_late --second delta_late
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "flip_all_ways"  --source "~/dippa/flip/target" --target "~/dippa/flip/result_multiple_flips/2_late" --first 2_late --second delta_late
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "flip_all_ways"  --source "~/dippa/flip/target" --target "~/dippa/flip/result_multiple_flips/3_late" --first 3_late --second delta_late
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "flip_all_ways"  --source "~/dippa/flip/target" --target "~/dippa/flip/result_multiple_flips/4_late" --first 4_late --second delta_late
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/subtract.py  --operator "flip_all_ways"  --source "~/dippa/flip/target" --target "~/dippa/flip/result_multiple_flips/sketch_girl_late" --first sketch_girl_late --second delta_late
+
+# reconstruct
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/result_multiple_flips/0_late --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=31
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/result_multiple_flips/1_late --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=31
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/result_multiple_flips/2_late --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=31
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/result_multiple_flips/3_late --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=31
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/result_multiple_flips/4_late --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=31
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/train.py -d celeba --start_iteration=28840000 --save_dir ~/dippa/CelebA-64/ --test_path ~/dippa/flip/latent --max_phase=10 --latent_inpath  ~/dippa/flip/result_multiple_flips/sketch_girl_late --testonly --latent_only=1 --latent_reconstructions_N=1 --reconstructions_N=31
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/0_late "reconstructed"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/1_late "reconstructed"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/2_late "reconstructed"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/3_late "reconstructed"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/4_late "reconstructed"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/sketch_girl_late "reconstructed"
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/ "stacked"
+
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/0_late "mp4"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/1_late "mp4"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/2_late "mp4"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/3_late "mp4"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/4_late "mp4"
+~/anaconda3/bin/python3.6 ~/dippa/pioneer-zeta/src/combine.py ~/dippa/flip/result_multiple_flips/sketch_girl_late "mp4"
+
+
